@@ -277,18 +277,7 @@ if (currentPage == 0)
             std::to_string(results.size()) +
             " mod(s).";
     }
-
-    ImGui::Spacing();
-
-    ImGui::Text("Results");
-
-    ImGui::BeginChild(
-        "Results",
-        ImVec2(0, 450),
-        true
-    );
-
-    for (const auto& mod : results)
+for (const auto& mod : results)
     {
         ImGui::Separator();
 
