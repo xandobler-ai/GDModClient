@@ -57,6 +57,7 @@ add_executable(GDModClient
     src/core/ModLoader.cpp
     src/core/GeodeIndex.cpp
     src/core/Http.cpp
+    src/core/Hash.cpp
 )
 
 target_include_directories(GDModClient PRIVATE
