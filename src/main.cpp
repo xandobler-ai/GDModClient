@@ -410,9 +410,7 @@ else
         }
     }
 }
-        );
-
-        for (const auto& mod : results)
+         for (const auto& mod : results)
         {
             ImGui::Separator();
 
