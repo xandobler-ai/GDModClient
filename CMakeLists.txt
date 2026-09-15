@@ -11,7 +11,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(GDModClient
     src/main.cpp
     src/core/ModLoader.cpp
-    src/core/GeodeIndex.cpp
+    src/gdmc/GeodeIndex.cpp
+    src/gdmc/Http.cpp
+)
 )
 
 target_include_directories(GDModClient PRIVATE
