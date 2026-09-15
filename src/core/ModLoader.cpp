@@ -39,25 +39,41 @@ bool ModLoader::install(const ModInfo& mod)
         return false;
     }
 
+    std::cout << "[GDMC] Verifying SHA-256...\n";
+
+    if (mod.hash.empty())
+    {
+        std::cerr << "[GDMC] Mod has no SHA-256 hash.\n";
+        return false;
+    }
+
+    std::string actualHash =
+        Hash::sha256(filename);
+
+    if (actualHash.empty())
+    {
+        std::cerr << "[GDMC] Failed to calculate hash.\n";
+        return false;
+    }
+
+    if (actualHash != mod.hash)
+    {
+        std::cerr << "[GDMC] HASH MISMATCH!\n";
+        std::cerr << "[GDMC] Expected: "
+                  << mod.hash
+                  << "\n";
+
+        std::cerr << "[GDMC] Actual:   "
+                  << actualHash
+                  << "\n";
+
+        std::filesystem::remove(filename);
+
+        return false;
+    }
+
+    std::cout << "[GDMC] SHA-256 verified!\n";
     std::cout << "[GDMC] Installed successfully!\n";
 
     return true;
-}
-
-bool ModLoader::load(const ModInfo& mod)
-{
-    std::cout << "[GDMC] Loading: "
-              << mod.name << "\n";
-
-    return true;
-}
-
-bool ModLoader::unload(const ModInfo& mod)
-{
-    std::cout << "[GDMC] Unloading: "
-              << mod.name << "\n";
-
-    return true;
-}
-
 }
