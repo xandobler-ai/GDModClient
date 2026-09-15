@@ -19,6 +19,20 @@ int main()
     std::cout << "Enter a mod to search for: ";
     std::getline(std::cin, query);
 
+    auto installed =
+    gdmc::InstalledMods::scan("mods");
+
+std::cout << "\nInstalled mods: "
+          << installed.size()
+          << "\n";
+
+for (const auto& mod : installed)
+{
+    std::cout << " - "
+              << mod
+              << "\n";
+}
+
     auto results = index.search(query);
 
     std::cout << "\nFound "
