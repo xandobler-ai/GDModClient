@@ -32,7 +32,8 @@ set(CURL_USE_LIBIDN2 OFF CACHE BOOL "" FORCE)
 set(CURL_USE_GSSAPI OFF CACHE BOOL "" FORCE)
 set(USE_NGHTTP2 OFF CACHE BOOL "" FORCE)
 
-set(HTTP_ONLY ON CACHE BOOL "" FORCE)
+set(HTTP_ONLY OFF CACHE BOOL "" FORCE)
+set(CURL_USE_SCHANNEL ON CACHE BOOL "" FORCE)
 
 FetchContent_MakeAvailable(curl)
 
@@ -97,7 +98,7 @@ target_include_directories(imgui PUBLIC
 # GDModClient
 # -------------------------
 
-add_executable(GDModClient
+add_executable(GDModClient WIN32
     src/main.cpp
     src/core/ModLoader.cpp
     src/core/GeodeIndex.cpp
