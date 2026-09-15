@@ -1,7 +1,7 @@
 #include <iostream>
+#include <string>
 
-#include "gdmc/ModInfo.hpp"
-#include "gdmc/ModLoader.hpp"
+#include "gdmc/GeodeIndex.hpp"
 
 int main()
 {
@@ -9,23 +9,31 @@ int main()
     std::cout << "       GD Mod Client\n";
     std::cout << "============================\n\n";
 
-    gdmc::ModInfo testMod;
+    gdmc::GeodeIndex index;
 
-    testMod.id = "example.testmod";
-    testMod.name = "Example Mod";
-    testMod.version = "1.0.0";
-    testMod.developer = "GDMC";
-    testMod.description = "A test mod.";
+    std::string query;
 
-    gdmc::ModLoader loader;
+    std::cout << "Enter a mod to search for: ";
+    std::getline(std::cin, query);
 
-    std::cout << "Testing mod system...\n\n";
+    auto results = index.search(query);
 
-    loader.install(testMod);
-    loader.load(testMod);
-    loader.unload(testMod);
+    std::cout << "\nFound "
+              << results.size()
+              << " mod(s).\n\n";
 
-    std::cout << "\nMod system test complete!\n";
+    for (const auto& mod : results)
+    {
+        std::cout << "----------------------------\n";
+        std::cout << mod.name << "\n";
+        std::cout << "ID: " << mod.id << "\n";
+        std::cout << "Version: " << mod.version << "\n";
+        std::cout << "Developer: " << mod.developer << "\n";
+        std::cout << "Description: "
+                  << mod.description << "\n";
+        std::cout << "Download: "
+                  << mod.downloadURL << "\n";
+    }
 
     return 0;
 }
