@@ -66,6 +66,9 @@ std::vector<ModInfo> GeodeIndex::search(const std::string& query)
             info.downloadURL =
                 version.value("download_link", "");
 
+            info.hash =
+                version.value("hash", "");
+
             results.push_back(info);
         }
 
