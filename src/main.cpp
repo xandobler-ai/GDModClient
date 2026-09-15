@@ -337,8 +337,6 @@ for (const auto& mod : results)
             }
         }
     }
-
-    ImGui::EndChild();
 }
 else
 {
@@ -411,18 +409,7 @@ else
             }
         }
     }
-
-    ImGui::EndChild();
 }
-
-        ImGui::Spacing();
-
-        ImGui::Text("Results");
-
-        ImGui::BeginChild(
-            "Results",
-            ImVec2(0, 450),
-            true
         );
 
         for (const auto& mod : results)
