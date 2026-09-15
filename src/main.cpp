@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 
+#include "gdmc/GeodePackage.hpp"
 #include "gdmc/InstalledMods.hpp"
 #include "gdmc/GeodeIndex.hpp"
 #include "gdmc/ModLoader.hpp"
