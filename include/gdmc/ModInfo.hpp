@@ -1,4 +1,5 @@
-#pragma once
+
+}#pragma once
 
 #include <string>
 
@@ -11,6 +12,7 @@ struct ModInfo {
     std::string developer;
     std::string description;
     std::string downloadURL;
+    std::string hash;
 };
 
 }
