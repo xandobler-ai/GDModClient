@@ -4,6 +4,11 @@
 #include <filesystem>
 #include <iostream>
 
+#include <windows.h>
+#include <bcrypt.h>
+
+#pragma comment(lib, "bcrypt.lib")
+
 namespace gdmc {
 
 bool ModLoader::install(const ModInfo& mod)
