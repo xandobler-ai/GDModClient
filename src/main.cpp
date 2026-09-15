@@ -15,6 +15,7 @@
 #include "imgui_impl_dx11.h"
 
 #include <GLFW/glfw3.h>
+#define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>
 
 #pragma comment(lib, "d3d11.lib")
