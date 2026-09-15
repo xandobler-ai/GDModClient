@@ -1,6 +1,7 @@
 #include <windows.h>
 #include <d3d11.h>
 
+#include <filesystem>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -130,7 +131,12 @@ static void CleanupDeviceD3D()
     }
 }
 
-int main()
+static void RefreshInstalledMods(
+    std::vector<std::string>& installedMods)
+{
+    installedMods =
+        gdmc::InstalledMods::scan("mods");
+} int main()
 {
     if (!glfwInit())
         return 1;
@@ -198,7 +204,7 @@ int currentPage = 0;
 
     std::string status =
         "Ready.";
-
+    RefreshInstalledMods(installedMods);
     while (!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
@@ -229,30 +235,195 @@ int currentPage = 0;
 
         ImGui::Separator();
 
-        ImGui::Text("Search Geode Index");
+       if (ImGui::Button("Browse"))
+{
+    currentPage = 0;
+}
 
-        ImGui::SetNextItemWidth(700);
+ImGui::SameLine();
 
-        ImGui::InputText(
-            "##search",
-            searchBuffer,
-            sizeof(searchBuffer)
+if (ImGui::Button("Installed"))
+{
+    currentPage = 1;
+    RefreshInstalledMods(installedMods);
+}
+
+ImGui::Separator();
+
+if (currentPage == 0)
+{
+    ImGui::Text("Search Geode Index");
+
+    ImGui::SetNextItemWidth(700);
+
+    ImGui::InputText(
+        "##search",
+        searchBuffer,
+        sizeof(searchBuffer)
+    );
+
+    ImGui::SameLine();
+
+    if (ImGui::Button("Search"))
+    {
+        status = "Searching...";
+
+        results =
+            index.search(searchBuffer);
+
+        status =
+            "Found " +
+            std::to_string(results.size()) +
+            " mod(s).";
+    }
+
+    ImGui::Spacing();
+
+    ImGui::Text("Results");
+
+    ImGui::BeginChild(
+        "Results",
+        ImVec2(0, 450),
+        true
+    );
+
+    for (const auto& mod : results)
+    {
+        ImGui::Separator();
+
+        ImGui::Text(
+            "%s",
+            mod.name.c_str()
+        );
+
+        ImGui::Text(
+            "ID: %s",
+            mod.id.c_str()
+        );
+
+        ImGui::Text(
+            "Version: %s",
+            mod.version.c_str()
+        );
+
+        ImGui::Text(
+            "Developer: %s",
+            mod.developer.c_str()
+        );
+
+        if (!mod.description.empty())
+        {
+            ImGui::TextWrapped(
+                "%s",
+                mod.description.c_str()
+            );
+        }
+
+        if (ImGui::Button(
+                ("Install##" + mod.id).c_str()))
+        {
+            status =
+                "Installing " +
+                mod.name +
+                "...";
+
+            if (loader.install(mod))
+            {
+                status =
+                    "Installed " +
+                    mod.name +
+                    " successfully.";
+
+                RefreshInstalledMods(
+                    installedMods
+                );
+            }
+            else
+            {
+                status =
+                    "Failed to install " +
+                    mod.name +
+                    ".";
+            }
+        }
+    }
+
+    ImGui::EndChild();
+}
+else
+{
+    ImGui::Text("Installed Mods");
+
+    if (ImGui::Button("Refresh"))
+    {
+        RefreshInstalledMods(
+            installedMods
+        );
+
+        status =
+            "Installed mods refreshed.";
+    }
+
+    ImGui::Spacing();
+
+    ImGui::BeginChild(
+        "Installed",
+        ImVec2(0, 500),
+        true
+    );
+
+    if (installedMods.empty())
+    {
+        ImGui::Text(
+            "No mods installed."
+        );
+    }
+
+    for (const auto& path : installedMods)
+    {
+        std::filesystem::path filePath(path);
+
+        std::string filename =
+            filePath.filename().string();
+
+        ImGui::Separator();
+
+        ImGui::Text(
+            "%s",
+            filename.c_str()
+        );
+
+        ImGui::TextWrapped(
+            "%s",
+            path.c_str()
         );
 
         ImGui::SameLine();
 
-        if (ImGui::Button("Search"))
+        if (ImGui::Button(
+                ("Uninstall##" + filename).c_str()))
         {
-            status = "Searching...";
+            if (std::filesystem::remove(path))
+            {
+                status =
+                    "Uninstalled " +
+                    filename;
 
-            results =
-                index.search(searchBuffer);
-
-            status =
-                "Found " +
-                std::to_string(results.size()) +
-                " mod(s).";
+                RefreshInstalledMods(
+                    installedMods
+                );
+            }
+            else
+            {
+                status =
+                    "Failed to uninstall " +
+                    filename;
+            }
         }
+    }
+
+    ImGui::EndChild();
+}
 
         ImGui::Spacing();
 
