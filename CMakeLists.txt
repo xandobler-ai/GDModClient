@@ -97,7 +97,7 @@ target_include_directories(imgui PUBLIC
 # GDModClient
 # -------------------------
 
-add_executable(GDModClient WIN32
+add_executable(GDModClient
     src/main.cpp
     src/core/ModLoader.cpp
     src/core/GeodeIndex.cpp
