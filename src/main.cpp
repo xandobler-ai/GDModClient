@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "gdmc/InstalledMods.hpp"
 #include "gdmc/GeodeIndex.hpp"
 #include "gdmc/ModLoader.hpp"
 
@@ -190,6 +191,10 @@ int main()
     char searchBuffer[256] = "";
 
     std::vector<gdmc::ModInfo> results;
+
+    std::vector<std::string> installedMods;
+
+int currentPage = 0;
 
     std::string status =
         "Ready.";
