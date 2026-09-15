@@ -1,3 +1,4 @@
+#include "gdmc/Hash.hpp"
 #include "gdmc/ModLoader.hpp"
 #include "gdmc/Http.hpp"
 
