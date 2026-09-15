@@ -12,7 +12,6 @@ add_executable(GDModClient
     src/main.cpp
     src/core/ModLoader.cpp
 )
-)
 
 target_include_directories(GDModClient PRIVATE
     include
